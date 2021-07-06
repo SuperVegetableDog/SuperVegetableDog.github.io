@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas {
+            border: 1px solid red;
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+</body>
+<script>
+    /** @type {HTMLCanvasElement} */
+    let canvasEl = document.querySelector('#myCanvas')
+    let pencil = canvasEl.getContext('2d')
+
+
+
+    function artColor() {
+        pencil.beginPath()
+        pencil.save()
+        // 绘制画布背景颜色
+        let linearGradient = pencil.createLinearGradient(0, 0, 600, 600);
+        linearGradient.addColorStop(0, 'rgb(253,101,6)');
+        linearGradient.addColorStop(1, 'rgb(152,111,242)');
+        pencil.fillStyle = linearGradient;
+        pencil.fillRect(0, 0, 600, 600);
+        pencil.restore()
+        pencil.closePath()
+    }
+
+
+
+
+    //绘制抽奖转盘
+    function Draw(speed) {
+        pencil.translate(300, 300)
+
+
+
+
+
+
+
+
+
+        for (let i = 0; i < 8; i++) {
+            if (i % 2 != 0) {
+                // 1 3 5 7
+                // 白色的扇形
+                pencil.save()
+
+                pencil.beginPath()
+                pencil.rotate(Math.PI * 2 / 8 * 1 * i)
+                pencil.rotate(-Math.PI * 2 / 8 * 1.5)
+                pencil.rotate(Math.PI * 2 / 360 * speed)
+                pencil.moveTo(0, 0)
+                pencil.arc(0, 0, 210, 0, Math.PI * 2 / 8)
+                pencil.fillStyle = 'rgba(251,251,224,1)'
+                pencil.fill()
+                pencil.closePath()
+                pencil.restore()
+
+
+
+
+
+            } else {
+                // 黄色的
+                pencil.save()
+                pencil.beginPath()
+                pencil.rotate(Math.PI * 2 / 8 * i)
+                pencil.rotate(-Math.PI * 2 / 8 * 1.5)
+                pencil.rotate(Math.PI * 2 / 360 * speed)
+                pencil.moveTo(0, 0)
+                pencil.arc(0, 0, 210, 0, Math.PI * 2 / 8)
+                pencil.fillStyle = 'rgb(248,201,80)'
+                pencil.fill()
+                pencil.closePath()
+                pencil.restore()
+
+
+
+
+
+
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 抽奖内容
+    let yellowText = ['15积分', '25积分', '35积分', '45积分']
+    let yellowIdx = 0
+    let whiteText = ['谢谢惠顾', '100元', '10经验值', '20元']
+    let whiteIdx = 0
+    let dataArray = ['15积分', '20元', '45积分', '10经验值', '35积分', '100元', '25积分', '谢谢惠顾']
+    console.log(dataArray);
+    function Content(speed) {
+
+        function text(x, y) {
+            for (let i = 0; i < 8; i++) {
+                if (i % 2 == 0) {
+                    pencil.save()
+                    pencil.beginPath()
+                    pencil.rotate(Math.PI * 2 / 8 * i)
+                    pencil.rotate(Math.PI * 2 / 360 * speed)
+                    pencil.font = 'bold 18px Arial';
+                    pencil.textAlign = 'center';
+                    pencil.textBaseline = 'top';
+                    pencil.fillStyle = 'red';
+                    pencil.fillText(yellowText[yellowIdx], x, y);
+                    yellowIdx++
+                    if (yellowIdx == 4) {
+                        yellowIdx = 0
+                    };
+                    pencil.closePath()
+                    pencil.restore()
+                } else {
+                    pencil.save()
+                    pencil.beginPath()
+                    pencil.rotate(Math.PI * 2 / 8 * i)
+                    pencil.rotate(Math.PI * 2 / 360 * speed)
+                    pencil.font = 'bold 18px Arial';
+                    pencil.textAlign = 'center';
+                    pencil.textBaseline = 'top';
+                    pencil.fillStyle = 'red';
+                    pencil.fillText(whiteText[whiteIdx], x, y);
+                    whiteIdx++
+                    if (whiteIdx == 4) {
+                        whiteIdx = 0
+                    };
+                    pencil.closePath()
+                    pencil.restore()
+                }
+            }
+        }
+        text(0, -150)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // 绘制表盘
+        function circle(r, lineW, color) {
+            pencil.save()
+            pencil.beginPath()
+            pencil.arc(0, 0, r, 0, Math.PI * 2)
+            pencil.lineWidth = lineW
+            pencil.strokeStyle = color
+            pencil.stroke()
+            pencil.closePath()
+            pencil.restore()
+        }
+        circle(250, 3, 'rgb(243,143,140)')
+        circle(236, 25, 'rgb(248,86,107)')
+        circle(226, 3, 'rgb(184,30,36)')
+        circle(50, 10, 'rgb(205,20,33)')
+
+
+        pencil.beginPath()
+        pencil.arc(0, 0, 45, 0, Math.PI * 2);
+        pencil.shadowOffsetX = 0;
+        pencil.shadowOffsetY = -4;
+        pencil.shadowBlur = 8;
+        pencil.shadowColor = "rgb(249,121,132)";
+        pencil.fillStyle = 'rgb(245,51,69)'
+        pencil.fill();
+        pencil.closePath()
+
+
+
+
+
+
+
+        // 绘制外表盘的小圆圈
+        for (let i = 0; i <= 27; i++) {
+            pencil.save()
+            pencil.beginPath()
+            pencil.rotate(Math.PI * 2 / 27 * i)
+            let smallCircle = pencil.createRadialGradient(0, -239, 2, 0, -239, 8);
+            smallCircle.addColorStop(0, 'rgb(255,249,249)');
+            smallCircle.addColorStop(.5, 'rgb(251,161,171)');
+            smallCircle.addColorStop(1, 'rgb(248,86,107)');
+            pencil.fillStyle = smallCircle;
+            pencil.arc(0, -239, 8, 0, Math.PI * 2)
+            pencil.fill()
+            pencil.closePath()
+            pencil.restore()
+        }
+        for (let i = 0; i <= 54; i++) {
+            if (i % 2 != 0) {
+                pencil.save()
+                pencil.beginPath()
+                pencil.rotate(Math.PI * 2 / 54 * i)
+                pencil.arc(0, -239, 5, 0, Math.PI * 2)
+                pencil.fillStyle = 'rgb(184,30,36)'
+                pencil.fill()
+                pencil.closePath()
+                pencil.restore()
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        // 绘制转盘指针
+
+        pencil.beginPath()
+        pencil.moveTo(0, -55)
+        pencil.lineTo(0, -80)
+        pencil.lineTo(10, -54)
+        pencil.fillStyle = 'rgb(205,20,33)'
+        pencil.fill()
+        pencil.closePath()
+        pencil.beginPath()
+        pencil.moveTo(0, -55)
+        pencil.lineTo(0, -80)
+        pencil.lineTo(-10, -54)
+        pencil.fillStyle = 'rgb(249,83,98)'
+        pencil.fill()
+        pencil.closePath()
+
+
+        // 绘制文字
+        pencil.font = 'bold 35px Arial';
+        pencil.textAlign = 'center';
+        pencil.textBaseline = 'middle';
+        pencil.fillStyle = '#ccc';
+        pencil.fillText("GO", 0, 0);
+
+    }
+
+
+
+
+
+
+
+
+    artColor()
+    Draw()
+    Content()
+
+
+
+    let control = 0
+
+    // 添加功能
+    function MClick(e) {
+
+
+        // 随机数：
+        let num = Math.round(Math.random() * 7)
+
+        if (e.offsetX < 340 && e.offsetX > 240 && e.offsetY > 240 && e.offsetY < 340) {
+
+
+            fn()
+            function fn() {
+                pencil.translate(-300, -300)
+                pencil.clearRect(0, 0, 600, 600);
+                control += 6
+
+                artColor()
+                Draw(control)
+                Content(control)
+
+
+
+                console.log(num);
+
+
+
+                if (control < 360 + 45 * num) {
+                    requestAnimationFrame(fn);
+                } else {
+                    alert(dataArray[num]);
+                    control=0
+                    pencil.translate(-300, -300)
+                pencil.clearRect(0, 0, 600, 600);
+                artColor()
+                Draw(control)
+                Content(control)
+                }
+
+
+
+
+
+            }
+
+
+        }
+
+
+    };
+    canvasEl.addEventListener('click', MClick);
+
+
+
+
+
+
+</script>
+
+</html>
